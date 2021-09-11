@@ -40,6 +40,68 @@
     \tableofcontents
     \mainmatter
     \part{The Packages}
+    
+    \chapter{NotesStyle}
+    The \package{NotesStyle} package controls the layout of the page.
+    It works based on the \package{memoir} \cite{memoir} document class.
+    If a different document class is used it will cause an error.
+    This document has been prepared using the the \package{NotesStyle} package.
+    
+    \package{NotesStyle} loads the following packagesd: \package{fontenc}, with the \verb!T1! option, \package{xcolor} \cite{xcolor}, \package{graphicx} \cite{graphicx}, \package{tikz} \cite{tikz}, \package{pgf-pie} \cite{pgf-pie}, \package{hyperref} \cite{hyperref}, and \package{cleveref} \cite{cleveref}.
+    As well as this the \package{tikz} library \package{external} is loaded.
+    
+    \section{Document Setup}
+    This package provides a few commands for starting a document.
+    These include making a title page, writing and abstract, and an inner-title page.
+    Most of the work of this package is behind the scenes setting the page layout, fonts, table of contents style, glossary style, etc.
+    
+    \subsection{Title Page}
+    The command \verb!\titlepage! will create a title page. This command should be the second thing in the document, the first being the command \verb!\frontmatter!.
+    The information contained on the title page is as follows
+    \begin{itemize}
+        \item Author's name, this can be set with \verb!\author{<name>}!, the same as the authors name for \verb!\maketitle!.
+        \item Title, this can be set with \verb!\subtitle{<the title>}!, the same as the title for \verb!\maketitle!.
+        \item Subtitle, this can be set with \verb!\subtitle{<the subtitle>}!. The default is \verb!Theoretical Physics!
+        \item Subsubtitle, this can be set with \verb!\subsubtitle{<the subsubtitle>}!. The default is \verb!Course Notes!.
+        \item Date, this can be set with \verb!\date{<the date>}!, the same as \verb!\maketitle!.
+    \end{itemize}
+    In the preamble of this document the code for the title page was
+    \begin{Verbatim}[gobble=2]
+        \title{Notes Packages}
+        \author{Willoughby Seago}
+        \date{March 18, 2021}
+        \subtitle{A Collection of Packages}
+        \subsubtitle{Some Documentation}
+    \end{Verbatim}
+    and the results of \verb!\titlepage! can be seen at the start of this document.
+
+    \subsection{Inner Title Page}
+    This is only to be used 
+    The command \verb!\innertitlepage{<empty or path to image>}! will create an inner title page. 
+    The inner title page starts with \verb!\maketitle!.
+    It then includes a predefined abstract with the following text:
+    \begin{Verbatim}[gobble=2]
+        These are my notes from the course {\MakeLowercase\thetitle{}}.
+        I took this course as a part of the theoretical physics degree
+        at the University of Edinburgh.
+        
+        These notes were last updated at \printtime{} on \today{}.
+        For notes on other topics see
+        \url{https://github.com/WilloughbySeago/Uni-Notes}.
+    \end{Verbatim}
+    where \verb!\thetitle! fills in the value set with \verb!\title{<the title>}!.
+    
+    Below the abstract the image given in the initial command is placed. Choose something relevant to the document. If no image is provided then a placeholder is used.
+    
+    \subsection{Glossaries and Indexes}
+    This package starts an index, a glossary, and a glossary of acronyms.
+    Items can be added to the index in the usual way using \verb!\index{}!. Similarly we can add to the glossary using \verb!\glossary{}{}! and \verb!\glossary[acronym]{}{}!.
+    
+    \subsection{Colours}
+    This package defines the colour \verb!highlight! which is the colour used for boxes, section numbers, the chapter pie charts, etc.
+    The default is set to the RGB colour \verb!{243, 102, 25}! which is \definecolor{highlightdefault}{RGB}{243, 102, 25}\tikz{\fill[highlightdefault] (0, 0) rectangle (0.25, 0.25);}. In this document \verb!highlight! was redefined to \verb!{100, 0, 100}! which is \tikz{\fill[highlight] (0, 0) rectangle (0.25, 0.25);}.
+    It is expected that this colour will be chosen individually for each document.
+    
     \chapter{NotesMaths}
     The simplest of the packages is \package{NotesMaths}.
     It defines lots of commands that I use when writing maths.
