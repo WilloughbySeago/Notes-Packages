@@ -9,7 +9,7 @@ I decided to split the package into three, each responsible for a different aspe
 * `NotesMaths` &mdash; this package contains all code relevant to typesetting maths, including importing some common packages and defining some commands.
 * `NotesBoxes` &mdash; this package declares a lot of boxes from the [`tcolorbox` package](https://www.ctan.org/pkg/tcolorbox).
 
-Details on how these three packages work is given [here](https://github.com/WilloughbySeago/Notes-Packages/blob/main/Notes-Packages.pdf)
+Details on how these three packages work is given [here](https://github.com/WilloughbySeago/Notes-Packages/blob/main/Notes-Packages.pdf).
 
 As well as these packages I also wrote styles for glossaries/indexes to use with [`makeindex`](https://mirror.ox.ac.uk/sites/ctan.org/indexing/makeindex/doc/makeindex.pdf).
 To go with these I wrote a `.bat` script, `mkindex.bat`, which runs the necessary commands to compile the indices.
