@@ -1,0 +1,660 @@
+\documentclass[fleqn, a4paper, openany]{memoir}
+\usepackage{NotesStyle}
+\usepackage{NotesBoxes}
+\usepackage{NotesMaths}
+
+\usepackage{blindtext}
+\usepackage{csquotes}
+
+\title{Notes Packages}
+\author{Willoughby Seago}
+\date{March 18, 2021}
+\subtitle{A Collection of Packages}
+\subsubtitle{Some Documentation}
+
+\newcommand{\package}[1]{{\textsf{\footnotesize #1}}}  % Typeset package names in this font
+
+\usepackage{fancyvrb}  % Used for Verbatim environment
+% Set parameters for fancyvrb such that theres no extra space above and below the Verbatim environment
+\fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}
+
+\usepackage[language=british, sorting=none]{biblatex}
+\addbibresource{notes-packages-bib.bib}
+
+\definecolor{highlight}{RGB}{100,0,100}
+
+\begin{document}
+    \frontmatter
+    \titlepage
+    \maketitle
+    \begin{abstract}
+        While at university I've been learning \LaTeX.
+        At the end of first year I wrote a package, called \package{NotesPackage} for use in second year, it was essentially just a preamble that I used in all documents.
+        At the end of second year that package was a mess and I wrote an updated version, called \package{NotesPackage2}.
+        Now almost at the end of third year it is again a mess and I am writing new packages.
+        The idea this time is to separate different aspects into different packages which can be loaded together or individually.
+        The three packages so far are \package{NotesStyle}, which controls how the document looks (this document is written with it), \package{NotesBoxes} which has a bunch of different box styles for various reasons, and \package{NotesMaths}, which is simply a lot of commands for typesetting maths.
+        Since these packages are for my personal use they are subject to change at any point and definitely aren't stable.
+        Everything in these packages has been done (probably better) in other packages so use those instead.
+    \end{abstract}
+    \tableofcontents
+    \mainmatter
+    \part{The Packages}
+    \chapter{NotesMaths}
+    The simplest of the packages is \package{NotesMaths}.
+    It defines lots of commands that I use when writing maths.
+    In this section these commands will be listed and examples given.
+    Unless specified otherwise all commands in this chapter are math mode commands.
+
+    \package{NotesMaths} loads the following packages: \package{amsfonts} \cite{amsfonts}, \package{amsmath} \cite{amsmath}, \package{bm} \cite{bm}, and \package{xparse} \cite{xparse}.
+    
+    
+    \section{Sets}
+    \subsection{Number Sets}
+    In maths we often need to typeset various number sets.
+    Most commonly the real numbers (\(\reals\)), integers (\(\integers\)), complex numbers (\(\complex\)), etc.
+    The predefined sets (and a generic field) are
+    \begin{align}
+        &\text{Natural numbers:}~&\naturals,\qquad &\text{Integers:}~&\integers,\\
+        &\text{Rational numbers:}~&\rationals,\qquad &\text{Real numbers:}~&\reals,\\
+        &\text{Complex numbers:}~&\complex,\qquad &\text{Quaternions:}~&\quaternions,\\
+        &\text{Octonions:}~&\octonions,\qquad &\text{Field:}~&\field.
+    \end{align}
+    Which can be accessed by
+    \begin{Verbatim}[gobble=2]
+        \naturals             \integers
+        \rationals            \reals
+        \complex              \quaternions
+        \octonions            \field
+    \end{Verbatim}
+
+    The default style for these sets, as we have already seen, is black board bold\footnote{the precise font is actually from \package{newtxmath} which has three blackboard bold fonts \cite{newtx}. This is the third which can be accessed as \texttt{\textbackslash{}vvmathbb}.}.
+    This can be changed, suppose you want upright bold number sets then by doing either of
+    \begin{Verbatim}[gobble=2]
+        \renewcommand{\numset}[1]{\mathbf{#1}}
+        \let\numset\mathbf
+    \end{Verbatim}
+    In which case the result will be
+    \let\oldnumset\numset
+    \let\numset\mathbf
+    \begin{align}
+        &\text{Natural numbers:}~&\naturals,\qquad &\text{Integers:}~&\integers,\\
+        &\text{Rational numbers:}~&\rationals,\qquad &\text{Real numbers:}~&\reals,\\
+        &\text{Complex numbers:}~&\complex,\qquad &\text{Quaternions:}~&\quaternions,\\
+        &\text{Octonions:}~&\octonions,\qquad &\text{Field:}~&\field.
+    \end{align}
+    \let\numset\oldnumset
+    
+    \subsection{Matrix Sets}
+    As well as sets of numbers it is common to deal with sets of matrices.
+    Typically these have understood names such as `the general linear group', and predefined symbols to go along with them, in this case \(\generalLinear\).
+    The most general set of matrices is the set of all \(m\times n\) matrices over a given field, \(\field\)\footnote{I suppose we could be even more general and consider matrices over a ring but this is about typesetting not maths so the distinction isn't important.}.
+    There isn't a universally agreed upon standard notation for this, I have seen all of the following used:
+    \begin{equation}
+        \field_{m\times n}, \qquad \field^{m\times n}, \qquad \field^{m, n}, \qquad\text{and}\qquad \matrices[m]{n}{\field}.
+    \end{equation}
+    
+    It is the last of these that I like the most as it fits with the notation of the other sets of matrices.
+    Therefore this is the notation that I have implemented.
+    To typeset \(\matrices[m]{n}{\field}\) use
+    \begin{Verbatim}[gobble=2]
+        \matrices[m]{n}{\field}
+    \end{Verbatim}
+    If we leave off the optional argument, as in \verb|\matrices{n}{\field}|, then we get \(\matrices{n}{\field}\), which is understood as shorthand for \(\matrices[n]{n}{\field}\), which are the square matrices.
+    As well as these the following groups are defined: general linear group, special linear group, orthogonal group, special orthogonal group, unitary group, special unitary group.
+    These are typeset using
+    \begin{Verbatim}[gobble=2]
+        \generalLinear    \specialLinear
+        \orthogonal       \specialOrthogonal
+        \unitary          \specialUnitary
+    \end{Verbatim}
+    and they will look like
+    \begin{equation}
+        \generalLinear, \qquad \specialLinear, \qquad \orthogonal, \qquad \specialOrthogonal, \qquad \unitary, \qquad\text{and}\qquad \specialUnitary.
+    \end{equation}
+    There are also Lie algebra's of these sets which are typeset with
+    \begin{Verbatim}[gobble=2]
+        \generalLinearLie    \specialLinearLie
+        \orthogonalLie       \specialOrthogonalLie
+        \unitaryLie          \specialUnitaryLie
+    \end{Verbatim}
+    which produces
+    \begin{equation}
+        \generalLinearLie, \qquad \specialLinearLie, \qquad \orthogonalLie, \qquad \specialOrthogonalLie, \qquad \unitaryLie, \qquad\text{and}\qquad \specialUnitaryLie.
+    \end{equation}
+    
+    \section{Bra-Ket Notation}
+    In quantum mechanics it is customary to denote vectors by \(\ket{\psi}\) and dual vectors by \(\bra{\varphi}\).
+    These are called kets and bras respectively.
+    We then write the inner product as \(\braket{\varphi}{\psi}\), which can be read as `bra-ket' or `bracket'\footnote{blame Paul Dirac}.
+    In this package there are four related commands and four starred versions.
+    The commands are
+    \begin{Verbatim}[gobble=2]
+        \ket{}        \bra{}        \braket{}{}        \ketbra{}{}
+    \end{Verbatim}
+    which, when given arguments, produce
+    \begin{equation}
+        \ket{\psi}, \qquad \bra{\varphi}, \qquad \braket{\varphi}{\psi}, \qquad\text{and}\qquad \ketbra{\psi}{\varphi}.
+    \end{equation}
+    The starred versions of these commands,
+    \begin{Verbatim}[gobble=2]
+        \ket*{}        \bra*{}        \braket*{}{}        \ketbra*{}{}
+    \end{Verbatim}
+    produce the same but scale with their arguments.
+    For example
+    \begin{equation}
+        \ket*{\frac{1}{2}}, \qquad \bra*{\frac{1}{2}}, \qquad \braket*{\frac{1}{2}}{\frac{1}{2}}, \qquad\text{and}\qquad \ketbra*{\frac{1}{2}}{\frac{1}{2}}.
+    \end{equation}
+    This is \emph{not} the default behaviour because often we have arguments that are just slightly different in height and this produces multiple heights in the same equation.
+    This is ugly.
+    So the starred version is there only for when you explicitly want scaling.
+    
+    \section{Vectors}
+    \subsection{Vectors Proper}
+    There are many notations for vectors.
+    Some of the most common are
+    \begin{equation}
+        \vec{a}, \qquad \underline{a}, \qquad \overline{a}, \qquad\text{and}\qquad \bm{a}.
+    \end{equation}
+    It is the last of these that I prefer and that is the default.
+    The most basic vector command is \verb*|\vv{}| which is simply an alias for the \verb*|\bm| command from \package{bm} \cite{bm}.
+    This can be redefined but it will typically cause issues.
+    For example to redefine vectors to use an arrow above you would also have to think carefully about unit vectors with a hat.
+    Speaking of unit vectors the following commands are all the vector commands defined:
+    \begin{Verbatim}[gobble=2]
+        \vv{x}        \vh{x}        \ve{x}
+    \end{Verbatim}
+    Which produce the following when given the argument \verb*|x|:
+    \begin{equation}
+        \vv{x}, \qquad \vh{x}, \qquad\text{and}\qquad \ve{x}.
+    \end{equation}
+    
+    Note that the command \verb*|\vv| is redefined if it is already defined.
+    For example \package{newtxmath} \cite{newtx} defines \verb*|\vv{AB}| to give \(\OLDvv{AB}\).
+    This can still be accessed using \verb*|\OLDvv| in place of \verb*|\vv|.
+    
+    \subsection{Vector Calculus}
+    To go along with vectors the four common vector calculus operators are defined, namely
+    \begin{Verbatim}[gobble=2]
+        \grad        \div        \curl        \laplacian
+    \end{Verbatim}
+    produce
+    \begin{equation}
+        \grad, \qquad \div, \qquad \curl, \qquad\text{and}\qquad \laplacian.
+    \end{equation}
+    Sometimes when working with multiple coordinate systems we use a subscript to denote which coordinate system the derivatives are with respect to.
+    This can be achieved using the following
+    \begin{Verbatim}[gobble=2]
+        \grad[r]        \div[r]        \curl[r]        \laplacian[r]
+    \end{Verbatim}
+    which produce
+    \begin{equation}
+        \grad[r], \qquad \div[r], \qquad \curl[r], \qquad\text{and}\qquad \laplacian[r].
+    \end{equation}
+    Personally I prefer the basic undecorated \(\nabla\) for these but some people like to remind themselves that this is a vector\footnote{it isn't.}.
+    For this use
+    \begin{Verbatim}[gobble=2]
+        \renewcommand{\nablaVector}{\vv{\nabla}}
+        \renewcommand{\nablaVector}{\vec{\nabla}}
+    \end{Verbatim}
+    which will give \(\vv{\nabla}\) and \(\vec{\nabla}\) respectively.
+    This will automatically apply to the gradient, divergence, and curl, but not the Laplacian as that is a scalar operator.
+    To change the Laplacian instead redefine \verb*|\nablaScalar|.
+    
+    Sometimes one wishes to use the words grad, div, or curl, as operators, particularly when applied to objects other than standard \(\reals^n\) vectors.
+    For this I have defined
+    \begin{Verbatim}[gobble=2]
+        \gradWord        \divWord        \curlWord
+    \end{Verbatim}
+    These produce
+    \begin{equation}
+        \gradWord, \qquad \divWord, \qquad\text{and}\qquad \curlWord
+    \end{equation}
+    These are typeset using \verb*|\@diffWordOperator|\footnote{if using @ in a command you either need to be in a \texttt{.sty} file or it needs to be wrapped in \texttt{\textbackslash{}makeatletter} and \texttt{\textbackslash{}makeatother}} and so you can change this to change how they are all typeset.
+    Don't forget to include \verb*|\mathop| for proper spacing!
+    I haven't done this for Laplacian as I've never seen it used.
+    
+    \section{Calculus}
+    \subsection{Diffcoeff}
+    The package \package{diffcoeff} \cite{diffcoeff} is loaded by \package{NotesMath}. 
+    The default symbol is changed to an upright \enquote{d} from italic.
+    The command \verb!\dd! is defined which produces output similar to \verb!\dl! but with a default spacing of 2mu in front of the differential. For example,
+    \begin{Verbatim}[gobble=2]
+        \diff[n]{f}{x}    \diff*{\diffp{\mathcal{L}}{\dot{q}}}{t}
+        \dl{V} = \dl{x}\dd{y}\dd{z} = \dl{^3x_i}
+    \end{Verbatim}
+    produces
+    \begin{equation}
+        \diff[n]{f}{x},\qquad \diff*{\diffp{\mathcal{L}}{\dot{q}}}{t},\qquad \dl{V} = \dl{x}\dd{y}\dd{z} = \dl{^3x_i}
+    \end{equation}
+    As well as these new derivatives are declared:
+    \begin{Verbatim}[gobble=2]
+        \diffm{\vv{u}}{t}    \diffD{y}{x}
+    \end{Verbatim}
+    which produce
+    \begin{equation}
+        \diffm{\vv{u}}{t}, \qquad \diffD{y}{x}
+    \end{equation}
+    
+    \section{Miscellaneous}
+    The commands in this section don't fit in any other section.
+    
+    \subsection{Absolute Value}
+    The absolute value command is \verb*|\abs{x}| which produces \(\abs{x}\).
+    This will automatically resize with its argument.
+    There is a starred version, \verb*|\abs*|, which doesn't resize.
+    The following uses \verb*|\abs| and \verb*|\abs*| respectively:
+    \begin{equation}
+        \abs{\frac{1}{2}}, \qquad\text{and}\qquad \abs*{\frac{1}{2}}.
+    \end{equation}
+    Note that the resizing behaviour is opposite to bra-ket notation.
+    This is because I do want the default behaviour of \verb*|\abs| to be resizing.
+    
+    \subsection{Fourier Transforms}
+    The symbol for a Fourier transform can be typeset using \verb*|\fourierTransform| which gives \(\fourierTransform\).
+    Similarly \verb*|\inverseFourierTransform| gives \(\inverseFourierTransform\).
+    Both of the Fs in these are typeset using \verb*|\fourierTransform| so changing the forward transform will automatically change the inverse transform.
+    
+    \subsection{Wordy Operators}
+    The diagonal operator, \(\diag\), is used to define a diagonal matrix by simply listing the elements on the diagonal.
+    It can be typeset using \verb*|\diag|.
+    
+    The sign operator, \(\sgn\), returns the sign of its argument and can be typeset using \verb*|\sgn|.
+    
+    The trig function \(\cosec x = 1/\sin x\) is left out of \LaTeX which uses \(\csc\) instead.
+    It can be typeset with \verb*|\cosec|.
+    Similarly \(\cosech x = 1/\sinh x\) can be typeset with \verb*|\cosech|
+    
+    \subsection{Averages}
+    Two commonly used notations for the mean/expected value of a random variable, \(x\), are \(\mean{x}\) and \(\expected{x}\).
+    These can be typeset using \verb*|\mean{x}| and \verb*|\expected{x}| respectively.
+    Additionally \verb*|\expected*| will resize with its argument.
+    The following are typeset with \verb*|\expected| and \verb*|\expected*| respectively:
+    \begin{equation}
+        \expected{\frac{1}{2}}, \qquad\text{and}\qquad \expected*{\frac{1}{2}}.
+    \end{equation}
+
+    \subsection{Operators}
+    Operators in quantum mechanics are often denoted with a hat.
+    This can be typeset using \verb*|\operator{O}| which produces \(\operator{O}\).
+    Sometimes operators can be seen as vectors, for example the angular momentum, in which case use \verb*|\vecoperator{L}| to produce \(\vecoperator{L}\).
+    This is also aliased as \verb*|\operatorvec|.
+    
+    \chapter{NotesBoxes}
+    The \package{NotesBoxes} package provides predefined boxes from the \package{tcolorbox} package \cite{tcolorbox}.
+    
+    \package{NotesBoxes} loads the following packages: \package{listings} \cite{listings}, \package{tcolorbox} \cite{tcolorbox}, \package{xcolor} \cite{xcolor} and \package{xparse} \cite{xparse}.
+    As well, the following \package{tcolorbox} libraries are loaded: \package{skins}, \package{theorems}, \package{breakable}, and \package{hooks}.
+    It is also assumed that \package{cleveref} is loaded \cite{cleveref}.
+    
+    Much of the code for these boxes was taken from \cite{Gleason}.
+    
+    \section{Important Box}
+    The important box is the simplest box.
+    It's use, as the name suggests, is to highlight important material.
+    For example
+    \begin{Verbatim}[gobble=2]
+        \begin{important}
+            The volume element in three dimensions is
+            \begin{equation}
+                \dd{V} = \dd{x}\dd{y}\dd{z} 
+                = r^2\sin\vartheta \dd{r}\dd{\vartheta}\dd{\varphi}
+            \end{equation}
+        \end{important}
+    \end{Verbatim}
+    produces
+    \begin{important}
+        The volume element in three dimensions is
+        \begin{equation}
+            \dd{V} = \dd{x}\dd{y}\dd{z} 
+            = r^2\sin\vartheta \dd{r}\dd{\vartheta}\dd{\varphi}.
+        \end{equation}
+    \end{important}
+    
+    \section{Theorem Box}
+    The theorem box is for typesetting theorems and their proofs.
+    For example
+    \begin{Verbatim}[gobble=2]
+        \begin{thm}{}{}
+            There are infinitely many primes.
+            \begin{proof}
+                Suppose there is a finite number of primes, \(\{p_i\}\).
+                Then \(\prod_i p_i + 1\) is either a new prime or has a
+                prime factor not in \(\{p_i\}\).
+                Therefore there are an infinite number of primes.
+            \end{proof}
+        \end{thm}
+    \end{Verbatim}
+    produces
+    \begin{thm}{}{}
+        There are infinitely many primes.
+        \begin{proof}
+            Suppose there is a finite number of primes, \(\{p_i\}\).
+            Then \(\prod_i p_i + 1\) is either a new prime or has a prime factor not in \(\{p_i\}\).
+            Therefore there are an infinite number of primes.
+        \end{proof}
+    \end{thm}
+    Notice the two empty arguments.
+    The first of these is for assigning a title to the theorem.
+    The second is for assigning a label.
+    This pattern follows for the rest of the boxes so won't be mentioned again.
+    For example,
+    \begin{Verbatim}[gobble=2]
+        \begin{thm}{Title}{thm:label}
+            A theorem.
+        \end{thm}
+    \end{Verbatim}
+    produces
+    \begin{thm}{Title}{thm:label}
+        A theorem.
+    \end{thm}
+    which we can then reference using \verb*|\cref{thm:label}| or \verb*|\nameref{thm:label}| which produces \cref{thm:label} or \nameref{thm:label} respectively.
+    
+    \section{Almost Theorem Boxes}
+    Often a result is not important enough to achieve the name of theorem.
+    Instead such results are called claims, propositions, lemmas, or corollaries.
+    There are boxes for these.
+    \begin{Verbatim}[gobble=2]
+        \begin{clm}{}{}
+            This is true.
+            \begin{proof}
+                Just believe me.
+            \end{proof}
+        \end{clm}
+    \end{Verbatim}
+    produces
+    \begin{clm}{}{}
+        This is true.
+        \begin{proof}
+            Just believe me.
+        \end{proof}
+    \end{clm}
+    and
+    \begin{Verbatim}[gobble=2]
+        \begin{prp}{}{}
+            A thing that we think is true.
+            \begin{proof}
+                Trivial.
+            \end{proof}
+        \end{prp}
+    \end{Verbatim}
+    produces
+    \begin{prp}{}{}
+        A thing that we think is true.
+        \begin{proof}
+            Trivial.
+        \end{proof}
+    \end{prp}
+    A lemma can be produced using
+    \begin{Verbatim}[gobble=2]
+        \begin{lma}{Jordan's Lemma}{lma:Jordan's lemma}
+            Let \(f\) be a continuous complex function
+            defined on the semicircle,
+            \begin{equation}
+                C_R = \{Re^{i\vartheta} \vert \vartheta \in [0, \pi]\},
+            \end{equation}
+            which has radius \(R > 0\) with the semicircle lying in the
+            upper half plane and centred at the origin.
+            If we can write \(f(z) = e^{iaz}g(z)\) for \(z\in C_R\) then
+            \begin{equation}
+                \abs{\int_{C_R} f(z) \dd{z}} \le \frac{\pi}{a}M_R
+            \end{equation}
+            where
+            \begin{equation}
+                M_R \coloneq \max_{\vartheta \in [0, \pi]}
+                \abs{g(Re^{i\vartheta})}.
+            \end{equation}
+            \begin{proof}
+                Left to the reader.
+            \end{proof}
+        \end{lma}
+    \end{Verbatim}
+    which produces
+    \begin{lma}{Jordan's Lemma}{lma:Jordan's lemma}
+        Let \(f\) be a continuous complex function defined on the semicircle,
+        \begin{equation}
+            C_R = \{Re^{i\vartheta} \vert \vartheta \in [0, \pi]\},
+        \end{equation}
+        which has radius \(R > 0\) with the semicircle lying in the
+        upper half plane and centred at the origin.
+        If we can write \(f(z) = e^{iaz}g(z)\) for \(z\in C_R\) then
+        \begin{equation}
+            \abs{\int_{C_R} f(z) \dd{z}} \le \frac{\pi}{a}M_R
+        \end{equation}
+        where
+        \begin{equation}
+            M_R \coloneq \max_{\vartheta \in [0, \pi]}\abs{g(Re^{i\vartheta})}.
+        \end{equation}
+        \begin{proof}
+            Left to the reader.
+        \end{proof}
+    \end{lma}
+    Similarly one may consider a corollary
+    \begin{Verbatim}[gobble=2]
+        \begin{crl}{}{}
+            Let \(f(z) = 1/z\).
+            Then
+            \begin{equation}
+                \int_{C_R} f(z) \dd{z} = 0
+            \end{equation}
+            where \(C_R\) is the semicircle of radius \(R\) in the upper half plane.
+            Then
+            \begin{equation}
+                \lim_{R \to \infty} \int_{C_R} f(z) \dd{z} = 0.
+            \end{equation}
+            \begin{proof}
+                The proof follows immediately from \nameref{lma:Jordan's lemma}.
+            \end{proof}
+        \end{crl}
+    \end{Verbatim}
+    produces
+    \begin{crl}{}{}
+        Let \(f(z) = 1/z\).
+        Then
+        \begin{equation}
+            \int_{C_R} f(z) \dd{z} = 0
+        \end{equation}
+        where \(C_R\) is the semicircle of radius \(R\) in the upper half plane.
+        Then
+        \begin{equation}
+            \lim_{R \to \infty} \int_{C_R} f(z) \dd{z} = 0.
+        \end{equation}
+        \begin{proof}
+            The proof follows immediately from \nameref{lma:Jordan's lemma}.
+        \end{proof}
+    \end{crl}
+    
+    \section{Definitions}
+    When defining something the box to use is the definition box.
+    \begin{Verbatim}[gobble=2]
+        \begin{dfn}{Group}{}
+            A group, \(\langle G, \cdot \rangle\) is a set, \(G\), 
+            and binary operation, \(\cdot\colon G\times G \to G\),
+            which satisfies the following group axioms:
+            \begin{align}
+                \forall a, b, c\in G \vert a(bc) = (ab)c,\\
+                \exists e \in G \vert eg = ge = e \forall g\in G,\\
+                \forall g \in G \exists g^{-1} \in G \vert
+                gg^{-1} = g^{-1}g = e.
+            \end{align}
+       \end{dfn}
+    \end{Verbatim}
+    produces
+    \begin{dfn}{Group}{}
+        A group, \(\langle G, \cdot \rangle\) is a set, \(G\), 
+        and binary operation, \(\cdot\colon G\times G \to G\),
+        which satisfies the following group axioms:
+        \begin{align}
+            \forall a, b, c\in G \vert a(bc) = (ab)c,\\
+            \exists e \in G \vert eg = ge = e \forall g\in G,\\
+            \forall g \in G \exists g^{-1} \in G \vert 
+            gg^{-1} = g^{-1}g = e.
+        \end{align}
+    \end{dfn}
+
+    We may wish to introduce some new notation.
+    This can be done with the notation box:
+    \begin{Verbatim}[gobble=2]
+        \begin{ntn}{}{}
+            We write \(A \cong B \iff \) \(A\) is isomorphic to \(B\).
+        \end{ntn}
+    \end{Verbatim}
+    produces
+    \begin{ntn}{}{}
+        We write \(A \cong B \iff \) \(A\) is isomorphic to \(B\).
+    \end{ntn}
+
+    \section{Additional Material Boxes}
+    Suppose we wish to give an example.
+    Then we can use the example box:
+    \begin{Verbatim}[gobble=2]
+        \begin{exm}{}{}
+            The set \(\integers/2\integers = \{0, 1\}\)
+            forms a group under addition modulo 2.
+        \end{exm}
+    \end{Verbatim}
+    \begin{exm}{}{}
+        The set \(\integers/2\integers = \{0, 1\}\) forms a group
+        under addition modulo 2.
+    \end{exm}
+    Or suppose that we want to note an application of what we have derived.
+    Then we can use the application box.
+    \begin{Verbatim}[gobble=2]
+        \begin{app}{}{}
+            Groups are useful in physics as they describe the 
+            symmetries of an object
+        \end{app}
+    \end{Verbatim}
+    \begin{app}{}{}
+        Groups are useful in physics as they describe the 
+        symmetries of an object
+    \end{app}
+    
+    \section{Code Boxes}
+    If we want to display code then we can do this in a code block.
+    \begin{Verbatim}[gobble=2]
+        \begin{cde}{}{}
+            \begin{lstlisting}[language=python, gobble=12]
+                def foo(x):
+                    print(f"x = {x}")
+            \end{lstlisting}
+        \end{cde}
+    \end{Verbatim}
+    produces
+    \begin{cde}{}{}
+        \begin{lstlisting}[language=python, gobble=12]
+            def foo(x):
+                print(f"x = {x}")
+        \end{lstlisting}
+    \end{cde}
+    The code is typeset using the \verb*|lstlistings| environment from the \package{listings} package so see \cite{listings} for more details on that.
+    Note that the \verb*|gobble=n| keyword removes the first \verb*|n| characters.
+    In my document I have 12 spaces of indentation within the \verb*|lstlisting| environment and so they are removed by \verb*|gobble|.
+    
+    The colour scheme is based on the solarized colour scheme \cite{solarized}.
+    It should work for multiple languages.
+    For example
+    \begin{Verbatim}[gobble=2]
+        \begin{cde}{}{}
+            \begin{lstlisting}[language=C++, gobble=12]
+                #include <iostream>
+                template <typename T>
+                void foo(T x) {
+                    std::cout << "x = " << x << std::endl;
+                }
+            \end{lstlisting}
+        \end{cde}
+    \end{Verbatim}
+    produces
+    \begin{cde}{}{}
+        \begin{lstlisting}[language=C++, gobble=12]
+            #include <iostream>
+            template <typename T>
+            void foo(T x) {
+                std::cout << "x = " << x << std::endl;
+            }
+        \end{lstlisting}
+    \end{cde}
+    and
+    \begin{Verbatim}[gobble=2]
+        \begin{cde}{}{}
+            \begin{lstlisting}[language={[LaTeX]TeX}, gobble=12]
+                \newcommand{\foo}[1]{#1}
+            \end{lstlisting}
+        \end{cde}
+    \end{Verbatim}
+    produces
+    \begin{cde}{}{}
+        \begin{lstlisting}[language={[LaTeX]TeX}, gobble=12]
+            \newcommand{\foo}[1]{#1}
+        \end{lstlisting}
+    \end{cde}
+
+    \section{Remark and Warn Boxes}
+    Often we wish to make a note of something without breaking the flow or maybe draw attention to an important point.
+    For this we have the remark and warn boxes.
+    For example
+    \begin{Verbatim}[gobble=2]
+        \begin{rmk}
+            Notice that ...
+        \end{rmk}
+    \end{Verbatim}
+    produces
+    \begin{rmk}
+        Notice that ...
+    \end{rmk}
+    Similarly
+    \begin{Verbatim}[gobble=2]
+        \begin{wrn}
+            Be careful not to ...
+        \end{wrn}
+    \end{Verbatim}
+    produces
+    \begin{wrn}
+        Be careful not to ...
+    \end{wrn}
+    
+    We can put boxes in boxes.
+    This is most useful when putting remarks, warnings, or important boxes in other boxes.
+    For example
+    \begin{exm}{}{}
+        This is an example
+        \begin{rmk}
+            This is a remark    
+        \end{rmk}
+    \end{exm}
+    \begin{lma}{}{}
+        This is a lemma
+        \begin{wrn}
+            This is a warning
+        \end{wrn}
+    \end{lma}
+    \begin{thm}{}{}
+        This is a theorem
+        \begin{important}
+            This is important
+        \end{important}
+    \end{thm}
+    In theory we can go multiple levels deep but this starts to look silly.
+    
+    \begin{dfn}{}{}
+        If we have long boxes they should automatically break over the page.
+        For example this definition has a list of properties:
+        \begin{enumerate}
+            \item First property
+            \item Second property
+            \item Third property
+        \end{enumerate}
+        and lots of text which means it takes more space than is left on the page.
+        
+        Lets test this by making the text in this box so long that it has no choice but to break into two parts.
+        It's becoming hard to think of something to say so I'm just going to use lorem ipsum.
+        
+        \blindtext
+        
+        Hey Look!
+        We're on the next page.
+    \end{dfn}{}{}
+    \backmatter
+    \printbibliography
+\end{document}
