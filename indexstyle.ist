@@ -1,0 +1,4 @@
+% MakeIndex style file  indexstyle.ist
+headings_flag 1
+heading_prefix "{\\bfseries \\hfill "
+heading_suffix "\\hfill}"
