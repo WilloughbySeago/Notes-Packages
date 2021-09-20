@@ -11,7 +11,7 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage{xcolor}
 \definecolor{highlight}{RGB}{243,102,25} % Define the highlight color used for highlighting throughout
-\RequirePckage{graphicx}
+\RequirePackage{graphicx}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Setup pagelayout -----------------------------------------------------
