@@ -11,6 +11,12 @@ I decided to split the package into two packages and a class, each responsible f
 
 Details on how these three packages work is given [here](https://github.com/WilloughbySeago/Notes-Packages/blob/main/Notes-Packages.pdf).
 
+Also in this repository is a package called `ParticlesPackage`, which is simply a list of definitions for commands for inserting symbols for particles.
+All fundamental particles are included.
+Each particle typically has four commands associated with it, for example `\Pelectron` for an electron, or the short form `\Pe`, and `\APelectron` or `\APe` for an antielectron (positron).
+There are some package options for typesetting the particles as upright or italic (upright is the preffered standard but many people don't follow it).
+There are also three gluons (red, blue and green) which appear coloured in the document and a package option to turn this off.
+
 As well as these packages I also wrote styles for glossaries/indexes to use with [`makeindex`](https://mirror.ox.ac.uk/sites/ctan.org/indexing/makeindex/doc/makeindex.pdf).
 To go with these I wrote a `.bat` script, `mkindex.bat`, which runs the necessary commands to compile the indices.
 To use this script simply edit in the paths to your `.gst` and `.ist` files, place the `.bat` in your PATH and then execute
