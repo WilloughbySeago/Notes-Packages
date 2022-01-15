@@ -13,6 +13,10 @@
 \definecolor{highlight}{RGB}{243,102,25} % Define the highlight color used for highlighting throughout
 \RequirePackage{graphicx}
 
+% define command
+\newcommand{\define}[1]{\textbf{#1}}
+\newcommand{\defineindex}[1]{\define{#1}\index{#1}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Setup pagelayout -----------------------------------------------------
 % change behaviour after title page to \clearforchapter for both even and odd pages, with openany option this means no blank page
@@ -25,7 +29,7 @@
 \setsecheadstyle{\bfseries\sffamily\Large}
 % Subsection headings large and small caps
 \setsubsecheadstyle{\sffamily\Large}
-% Subsubsection headings in smal caps
+% Subsubsection headings in small caps
 \setsubsubsecheadstyle{\large\sffamily}
 % Number subsection and higher
 \setsecnumdepth{subsubsection}
@@ -49,8 +53,8 @@
 \renewcommand{\chaptitlefont}{\Huge\bfseries\sffamily}
 % Numbering of equations etc.
 \counterwithin{equation}{section}
-\counterwithin{figure}{section}
-\counterwithin{table}{section}
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
 
 \footnotesinmargin
 

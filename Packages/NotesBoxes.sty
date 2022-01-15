@@ -1,6 +1,6 @@
 %%%%% File NotesBoxes.sty
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{NotesBoxes}[2021/09/11 v1.1 Notes Boxes]
+\ProvidesPackage{NotesBoxes}[2021/09/16 v1.1.1 Notes Boxes]
 
 %%%%%% Packages
 \RequirePackage{xparse}  % For more advanced command giving
@@ -19,6 +19,8 @@
 \tcbuselibrary{hooks}
 % End tcolorbox libraries ---------------------------------------------------
 
+\tcbsetforeverylayer{shield externalize}  % Don't externalise tcolorboxes or tcolorboxes within tcolorboxes
+
 % Colours -------------------------------------------------------------------
 \RequirePackage{xcolor}
 % TODO Check which colours are actually used
@@ -30,18 +32,18 @@
 % End colours ---------------------------------------------------------------
 
 % Make tcolorbox theorems work with cleveref's cref -------------------------
-% I don't know how this works, but it does, copied from
+% I don't know how this works, but it does (not anymore but I'm scared to delete it incase I need it again), copied from
 % https://github.com/GleasSpty
-\renewcommand{\new@tcbtheorem}[5][]{%
-    \@@newtcolorbox[auto counter,#1]{#2}[3][]{#4,%
-        title={\tcb@theo@title{#3}{\thetcbcounter}{##2}},%
-        list entry={\protect\numberline{\thetcbcounter}##2},%
-        code={\gdef\@currentlabelname{##2}\tcb@theo@label{#5}{##3}},%
-        ##1}%
-    \@@newtcolorbox[#1,no counter,list inside=]{#2*}[2][]{#4,%
-        title={\tcb@theo@title{#3}{\@empty}{##2}},%
-        ##1}%
-}
+%\renewcommand{\new@tcbtheorem}[5][]{%
+%    \@@newtcolorbox[auto counter,#1]{#2}[3][]{#4,%
+%        title={\tcb@theo@title{#3}{\thetcbcounter}{##2}},%
+%        list entry={\protect\numberline{\thetcbcounter}##2},%
+%        code={\gdef\@currentlabelname{##2}\tcb@theo@label{#5}{##3}},%
+%        ##1}%
+%    \@@newtcolorbox[#1,no counter,list inside=]{#2*}[2][]{#4,%
+%        title={\tcb@theo@title{#3}{\@empty}{##2}},%
+%        ##1}%
+%}
 % End make tcolorbox theorems work with cleverref's cref --------------------
 
 % Important box -------------------------------------------------------------
@@ -55,6 +57,7 @@
 
 % Counter shenanigans -------------------------------------------------------
 % To the best of my understanding this section makes it so that resetting a counter doesn't mess up hyperlinks? This could be completely wrong but it works so don't touch it.
+% It no longer all works but I'm not quite sure if I've fixed the problem or just pushed it back a level so I'm leaving this here until I can be sure which bits I don't need
 \newcounter{step}
 \setcounter{step}{0}
 \crefname{step}{Step}{Steps}
@@ -109,6 +112,7 @@ crefname={Theorem}{Theorems}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{highlight}---}},%
     terminator sign={.\ },%
+    label type=thm,%
     label separator=,}
 {}
 % End theorem environment ---------------------------------------------------
@@ -143,6 +147,7 @@ crefname={Proposition}{Propositions}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{highlight}---}},%
     terminator sign={\ },%
+    label type=prp,%
     label separator=,}
 {}
 
@@ -177,6 +182,7 @@ crefname={CLaim}{Claims}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{highlight}---}},%
     terminator sign={\ },%
+    label type=clm,%
     label separator=,}
 {}
 
@@ -212,6 +218,7 @@ crefname={Corollary}{Corollaries}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{highlight}---}},%
     terminator sign={\ },%
+    label type=crl,%
     label separator=,}%
 {}
 % End corollary environment -------------------------------------------------
@@ -246,6 +253,7 @@ crefname={Lemma}{Lemmas}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{highlight}---}},%
     terminator sign={\ },%
+    label type=lma,%
     label separator=,}%
 {}
 % End lemma environment -----------------------------------------------------
@@ -280,6 +288,7 @@ crefname={Definition}{Definitions}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{black}---}},%
     terminator sign={\ },%
+    label type=dfn,%
     label separator=,}
 {}
 % End definition environment ------------------------------------------------
@@ -315,6 +324,7 @@ crefname={Example}{Examples}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{black}---}},%
     terminator sign={\ },%
+    label type=exm,%
     label separator=,
 }{}
 % End example environment ---------------------------------------------------
@@ -350,6 +360,7 @@ crefname={Application}{Applications}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{black}---}},%
     terminator sign={\ },%
+    label type=app,%
     label separator=,
 }{}
 % End application environment -----------------------------------------------
@@ -378,14 +389,14 @@ crefname={Code}{Code}]%
     description font=\sffamily\upshape\bfseries\small,%
     description color=black,%
     colframe=highlight,%
-    %colback=azure(web)(azuremist)!45,%
-    colback=codeBackgroundColor,
+    colback=codeBackgroundColor,%
     boxrule=0pt,%
     leftrule=4pt,%
     sharp corners,%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{black}---}},%
     terminator sign={\ },%
+    label type=cde,%
     label separator=,
 }{}
 % End code environment ------------------------------------------------------
@@ -420,6 +431,7 @@ crefname={Notation}{Notation}]%
     description delimiters={}{},%
     separator sign={\nobreakspace {\color{black}---}},%
     terminator sign={\ },%
+    label type=ntn,%
     label separator=,}
 {}
 % End notation environment --------------------------------------------------
@@ -435,10 +447,12 @@ crefname={Notation}{Notation}]%
             \ignorespaces}%
         \item % Indentation on the right
         \makebox[-2.5pt]{%
+	  \tikzexternaldisable
             \begin{tikzpicture}[overlay]
                 \node[draw=highlight!60,line width=1pt,minimum size=0.5cm,circle,fill=highlight!25,font=\sffamily\bfseries,inner sep=2pt,outer sep=0pt] at (-15pt,0pt){\textcolor{highlight}{R}};%
             \end{tikzpicture}
-        } % Orange R in a circle
+	  \tikzexternalenable
+        } % Highlight coloured R in a circle
         \advance\baselineskip -1pt%
         \noindent%
         \unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip%
@@ -460,10 +474,12 @@ crefname={Notation}{Notation}]%
             \ignorespaces}%
         \item % Indentation on the right
         \makebox[-2.5pt]{%
+	  \tikzexternaldisable
             \begin{tikzpicture}[overlay]
                 \node[draw=red!60,line width=1pt,minimum size=0.5cm,circle,fill=red!25,font=\sffamily\bfseries,inner sep=2pt,outer sep=0pt] at (-15pt,0pt){\textcolor{red}{!}};%
             \end{tikzpicture}
-        } % Orange R in a circle
+            \tikzexternalenable
+        } % Red ! in a circle
         \advance\baselineskip -1pt%
         \noindent%
         \unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip\unskip%

@@ -6,50 +6,17 @@
 \RequirePackage{xparse}  % Needed for command formatting
 \RequirePackage{amsmath}  % Needed for \DeclareMathOperator
 \RequirePackage{amsfonts}  % Needed for black board bold
+\RequirePackage{mathtools}  % Needed for \DeclarePairedDelimiter 
 \RequirePackage{bm}  % Needed for bold vectors
 
-% Absolute value
-% \abs{arg} for normal absolute value, \abs*{arg} for resizing absolute value
-\NewDocumentCommand{\abs}{s m}{%
-    \IfBooleanTF{#1}{%
-        | #2 |
-    }{%
-        \left| #2 \right|
-    }
-}
+% Absolute value/Norm
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
 % Bra-ket notation ---------------------------------------------------------
-\NewDocumentCommand{\ket}{s m}{%
-    \IfBooleanTF{#1}{%
-        \left| #2 \right\rangle
-    }{%
-        | #2 \rangle
-    }
-}
-
-\NewDocumentCommand{\bra}{s m}{%
-    \IfBooleanTF{#1}{%
-        \left\langle #2 \right|
-    }{%
-        \langle #2 |
-    }
-}
-
-\NewDocumentCommand{\braket}{s m m}{
-    \IfBooleanTF{#1}{%
-        \left\langle #2 \middle| #3 \right\rangle
-    }{%
-        \langle #2 | #3 \rangle
-    }
-}
-
-\NewDocumentCommand{\ketbra}{s m m}{%
-    \IfBooleanTF{#1}{%
-        \left| #2 \middle\rangle \middle\langle #3 \right|
-    }{%
-        | #2 \rangle \langle #3 |
-    }
-}
+\DeclarePairedDelimiter{\ket}{\lvert}{\rangle}
+\DeclarePairedDelimiter{\bra}{\langle}{\rvert}
+\DeclarePairedDelimiterX{\braket}[2]{\langle}{\rangle}{{#1} \mathclose{}\delimsize\vert\mathopen{} {#2}}
 
 % End bra-ket notation -----------------------------------------------------
 
@@ -60,18 +27,21 @@
 % define other types of derivative
 % material derivative
 \diffdef{m}{op-symbol=\mathrm{D}}
-\newcommand{\diffm}{\diff.m.}
+\newcommand*{\diffm}{\diff.m.}
 % difference derivative
 \diffdef{D}{op-symbol=\Delta}
-\newcommand{\diffD}{\diff.D.}
+\newcommand*{\diffD}{\diff.D.}
 
+% fix \dl
+\let\@dl\dl
+\renewcommand*{\dl}[1]{\@dl0#1}
 % define \dd to be differential w/ extra spacing
-\newcommand{\dd}[1]{\mskip2mu \dl{#1}}
+\newcommand*{\dd}[1]{\mskip2mu \dl{#1}}
 % End derivatives ---------------------------------------------------------
 
 % Vector calc derivatives -------------------------------------------------
-\newcommand{\nablaScalar}{\nabla}
-\newcommand{\nablaVector}{\nabla}
+\newcommand*{\nablaScalar}{\nabla}
+\newcommand*{\nablaVector}{\nabla}
 \NewDocumentCommand{\grad}{o}{
     \IfNoValueTF{#1}{
         \nablaVector
@@ -106,42 +76,40 @@
 }
 %\newcommand{\laplacian}{\nabla^2}
 % Sometimes need versions that use the word as an operator
-\newcommand{\@diffWordFont}[1]{\mathop{\mathrm{#1}}}
-\newcommand{\gradWord}{\@diffWordFont{grad}}
-\newcommand{\divWord}{\@diffWordFont{div}}
-\newcommand{\curlWord}{\@diffWordFont{curl}}
+\newcommand*{\@diffWordFont}[1]{\mathop{\mathrm{#1}}}
+\newcommand*{\gradWord}{\@diffWordFont{grad}}
+\newcommand*{\divWord}{\@diffWordFont{div}}
+\newcommand*{\curlWord}{\@diffWordFont{curl}}
 % End vector calc derivatives ---------------------------------------------
 
 % Vectors -----------------------------------------------------------------
 % Some packages (newmathtx) define \vv so undefine it
-\@ifundefined{vv}{}{%
-    \let\OLDvv=\vv
-}
+\providecommand*\vv{}  % define if not already defined, if defined do nothing
 
 % Basic vector bold, renewcommand to change
-\renewcommand{\vv}[1]{\bm{#1}}
+\renewcommand*{\vv}[1]{\bm{#1}}
 
 % Unit vectors, e_1 etc.
-\newcommand{\ve}[1]{\vv{e_{#1}}}
+\newcommand*{\ve}[1]{\vv{e_{#1}}}
 
 % Unit vectors w/ a hat
-\newcommand{\vh}[1]{\vv{\hat{#1}}}
+\newcommand*{\vh}[1]{\vv{\hat{#1}}}
 
 % End vectors -------------------------------------------------------------
 
 % Number sets -------------------------------------------------------------
 
 % Define style that number sets will have
-\newcommand{\numset}[1]{\mathbb{#1}}
+\newcommand*{\numset}[1]{\mathbb{#1}}
 
-\newcommand{\naturals}{\numset{N}}
-\newcommand{\integers}{\numset{Z}}
-\newcommand{\rationals}{\numset{Q}}
-\newcommand{\reals}{\numset{R}}
-\newcommand{\complex}{\numset{C}}
-\newcommand{\quaternions}{\numset{H}}
-\newcommand{\octonions}{\numset{O}}
-\newcommand{\field}{\numset{F}}
+\newcommand*{\naturals}{\numset{N}}
+\newcommand*{\integers}{\numset{Z}}
+\newcommand*{\rationals}{\numset{Q}}
+\newcommand*{\reals}{\numset{R}}
+\newcommand*{\complex}{\numset{C}}
+\newcommand*{\quaternions}{\numset{H}}
+\newcommand*{\octonions}{\numset{O}}
+\newcommand*{\field}{\numset{F}}
 
 % End number sets ---------------------------------------------------------
 
@@ -154,37 +122,32 @@
         \mathcal{M}_{{#1}\times{#2}}(#3)
     }
 }
-\DeclareMathOperator{\generalLinear}{GL}
-\DeclareMathOperator{\specialLinear}{SL}
-\DeclareMathOperator{\orthogonal}{O}
-\DeclareMathOperator{\specialOrthogonal}{SO}
-\DeclareMathOperator{\unitary}{U}
-\DeclareMathOperator{\specialUnitary}{SU}
+
+\newcommand{\generalLinear}{\mathrm{GL}}
+\newcommand{\specialLinear}{\mathrm{SL}}
+\newcommand{\orthogonal}{\mathrm{O}}
+\newcommand{\specialOrthogonal}{\mathrm{SO}}
+\newcommand{\unitary}{\mathrm{U}}
+\newcommand{\specialUnitary}{\mathrm{SU}}
 
 % Lie algebras
-\newcommand{\lie}[1]{\mathfrak{#1}}
-\newcommand{\generalLinearLie}{\lie{gl}}
-\newcommand{\specialLinearLie}{\lie{sl}}
-\newcommand{\orthogonalLie}{\lie{o}}
-\newcommand{\specialOrthogonalLie}{\lie{so}}
-\newcommand{\unitaryLie}{\lie{u}}
-\newcommand{\specialUnitaryLie}{\lie{su}}
+\newcommand*{\lie}[1]{\mathfrak{#1}}
+\newcommand*{\generalLinearLie}{\lie{gl}}
+\newcommand*{\specialLinearLie}{\lie{sl}}
+\newcommand*{\orthogonalLie}{\lie{o}}
+\newcommand*{\specialOrthogonalLie}{\lie{so}}
+\newcommand*{\unitaryLie}{\lie{u}}
+\newcommand*{\specialUnitaryLie}{\lie{su}}
 
 % End other sets ----------------------------------------------------------
 
 % Transforms --------------------------------------------------------------
-\newcommand{\fourierTransform}{\mathcal{F}}
-\newcommand{\inverseFourierTransform}{\fourierTransform^{-1}}
+\newcommand*{\fourierTransform}{\mathcal{F}}
+\newcommand*{\inverseFourierTransform}{\fourierTransform^{-1}}
 % End transforms ----------------------------------------------------------
 
 % Averages ----------------------------------------------------------------
-\NewDocumentCommand{\expected}{s m}{
-    \IfBooleanTF{#1}{%
-        \left\langle #2 \right\rangle
-    }{%
-        \langle #2 \rangle
-    }
-}
+\DeclarePairedDelimiter{\expected}{\langle}{\rangle}
 \newcommand{\mean}[1]{\overline{#1}}
 % End averages ------------------------------------------------------------
 
@@ -196,8 +159,8 @@
 % End wordy operators -----------------------------------------------------
 
 % Operators ---------------------------------------------------------------
-\newcommand{\operator}[1]{\hat{#1}}
-\newcommand{\vecoperator}[1]{\vv{\operator{#1}}}
+\newcommand*{\operator}[1]{\hat{#1}}
+\newcommand*{\vecoperator}[1]{\vv{\operator{#1}}}
 \let\operatorvec=\vecoperator
 % End operators -----------------------------------------------------------
 
@@ -205,6 +168,9 @@
 % I often end up writing something like
 % \qquad\text{...}\qquad
 % where ... is and, or, where, etc. so here are some macros for this:
-\newcommand{\qqand}{\qquad\text{and}\qquad}
-\newcommand{\qqor}{\qquad\text{or}\qquad}
-\newcommand{\qqwhere}{\qquad\text{where}\qquad}
+\newcommand*{\qqand}{\qquad\text{and}\qquad}
+\newcommand*{\qand}{\quad\text{and}\quad}
+\newcommand*{\qqor}{\qquad\text{or}\qquad}
+\newcommand*{\qor}{\quad\text{or}\quad}
+\newcommand*{\qqwhere}{\qquad\text{where}\qquad}
+\newcommand*{\qwhere}{\quad\text{where}\quad}

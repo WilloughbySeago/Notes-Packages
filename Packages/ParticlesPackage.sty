@@ -1,0 +1,240 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ParticlesPackage}[2021/09/19 Package for typesetting particles]
+\RequirePackage{upgreek}
+\RequirePackage{xcolor}
+
+%% New ifs
+% upright particles default
+\newif\ifuprightparticles
+\uprightparticlestrue
+
+% colored gluons default
+\newif\ifcolorgluons
+\colorgluonstrue
+
+%% Process options
+% upright vs. slanted
+\DeclareOption{upright}{\uprightparticlestrue}
+\DeclareOption{slanted}{\uprightparticlesfalse}
+% color vs. black
+\DeclareOption{color}{\colorgluonstrue}
+\DeclareOption{black}{\colorgluonsfalse}
+% undefined options (warning)
+\DeclareOption*{\PackageWarning{ParticlesPackage}{Unknown option: `\CurrentOption'}}
+\ProcessOptions\relax
+
+% Upright (or not) particles
+\ifuprightparticles
+	\newcommand{\particletypeface}[1]{\mathrm{#1}}
+\else
+	\newcommand{\particletypeface}[1]{#1}
+\fi
+
+%%%%%% Macros %%%%%%
+\newcommand{\anti}[1]{\bar{#1}}
+
+%%%%%%%%%%%% Particles %%%%%%%%%%%%
+
+%%%%%% Atomic particles %%%%%%
+
+%%% Electron %%%
+\newcommand{\PBASE@electron}{\ensuremath{\particletypeface{e}}}
+\ifuprightparticles
+    \newcommand{\PBASE@beta}{\ensuremath{\upbeta}}
+\else
+    \newcommand{\PBASE@beta}{\ensuremath{\beta}}
+\fi
+\newcommand{\Pelectron}{\ensuremath{\PBASE@electron^-}}
+\newcommand{\Pbeta}{\ensuremath{\PBASE@beta^-}}
+\newcommand{\Pelectronneutral}{\ensuremath{\PBASE@electron}}
+\newcommand{\Pbetaminus}{\ensuremath{\PBASE@beta^-}}
+\newcommand{\Pbetaneutral}{\ensuremath{\PBASE@beta}}
+% Antiparticle
+\newcommand{\APelectron}{\ensuremath{\PBASE@electron^+}}
+\newcommand{\APpositron}{\APelectron}
+\newcommand{\APbeta}{\ensuremath{\PBASE@beta^+}}
+
+%%% Proton %%%
+\newcommand{\PBASE@proton}{\ensuremath{\particletypeface{p}}}
+\newcommand{\Pproton}{\PBASE@proton}
+\newcommand{\Pprotonp}{\ensuremath{\PBASE@proton^+}}
+% Antiparticle
+\newcommand{\APproton}{\ensuremath{\anti{\PBASE@proton}}}
+\newcommand{\APprotonm}{\ensuremath{\APproton^-}}
+
+%%% Neutron %%%
+\newcommand{\PBASE@neutron}{\ensuremath{\particletypeface{n}}}
+\newcommand{\Pneutron}{\PBASE@neutron}
+\newcommand{\Pneutronzero}{\ensuremath{\PBASE@neutron^0}}
+% Antiparticle
+\newcommand{\APneutron}{\ensuremath{\anti{\PBASE@neutron}}}
+\newcommand{\APneutronzero}{\ensuremath{\APneutron^0}}
+
+%%%%%% Leptons %%%%%%
+
+%%% Muon %%%
+\ifuprightparticles
+    \newcommand{\PBASE@muon}{\ensuremath{\upmu}}
+\else
+    \newcommand{\PBASE@muon}{\ensuremath{\mu}}
+\fi
+\newcommand{\Pmuon}{\ensuremath{\PBASE@muon^-}}
+% Antiparticle
+\newcommand{\APmuon}{\ensuremath{\PBASE@muon^+}}
+
+%%% Tauon %%%
+\ifuprightparticles
+    \newcommand{\PBASE@tauon}{\ensuremath{\uptau}}
+\else
+    \newcommand{\PBASE@tauon}{\ensuremath{\tau}}
+\fi
+\newcommand{\Ptauon}{\ensuremath{\PBASE@tauon^-}}
+% Antiparticle
+\newcommand{\APtauon}{\ensuremath{\PBASE@tauon^+}}
+
+%%% Neutrinos %%%
+\ifuprightparticles
+    \newcommand{\PBASE@neutrino}{\ensuremath{\upnu}}
+\else
+    \newcommand{\PBASE@neutrino}{\ensuremath{\nu}}
+\fi
+\newcommand{\Pneutrino}{\PBASE@neutrino}
+\newcommand{\Pneutrinoelectron}{\ensuremath{\Pneutrino_{\PBASE@electron}}}
+\newcommand{\Pneutrinomuon}{\ensuremath{\Pneutrino_{\PBASE@muon}}}
+\newcommand{\Pneutrinotauon}{\ensuremath{\Pneutrino_{\PBASE@tauon}}}
+% Antiparticles
+\newcommand{\APneutrino}{\ensuremath{\anti{\PBASE@neutrino}}}
+\newcommand{\APneutrinoelectron}{\ensuremath{\APneutrino_{\PBASE@electron}}}
+\newcommand{\APneutrinomuon}{\ensuremath{\APneutrino_{\PBASE@muon}}}
+\newcommand{\APneutrinotauon}{\ensuremath{\APneutrino_{\PBASE@tauon}}}
+
+%%%%%% Quarks %%%%%%
+\newcommand{\PBASE@quark}{\ensuremath{\particletypeface{q}}}
+\newcommand{\PBASE@up}{\ensuremath{\particletypeface{u}}}
+\newcommand{\PBASE@down}{\ensuremath{\particletypeface{d}}}
+\newcommand{\PBASE@strange}{\ensuremath{\particletypeface{s}}}
+\newcommand{\PBASE@charm}{\ensuremath{\particletypeface{c}}}
+\newcommand{\PBASE@top}{\ensuremath{\particletypeface{t}}}
+\newcommand{\PBASE@bottom}{\ensuremath{\particletypeface{b}}}
+
+\newcommand{\Pquark}{\PBASE@quark}
+\newcommand{\Pup}{\PBASE@up}
+\newcommand{\Pdown}{\PBASE@down}
+\newcommand{\Pstrange}{\PBASE@strange}
+\newcommand{\Pcharm}{\PBASE@charm}
+\newcommand{\Ptop}{\PBASE@top}
+\newcommand{\Pbottom}{\PBASE@bottom}
+
+% Antiparticles
+\newcommand{\APquark}{\ensuremath{\anti{\PBASE@quark}}}
+\newcommand{\APup}{\ensuremath{\anti{\PBASE@up}}}
+\newcommand{\APdown}{\ensuremath{\anti{\PBASE@down}}}
+\newcommand{\APstrange}{\ensuremath{\anti{\PBASE@strange}}}
+\newcommand{\APcharm}{\ensuremath{\anti{\PBASE@charm}}}
+\newcommand{\APtop}{\ensuremath{\anti{\PBASE@top}}}
+\newcommand{\APbottom}{\ensuremath{\anti{\PBASE@bottom}}}
+
+%%%%%% Bosons %%%%%%
+
+%%% Photon %%%
+\ifuprightparticles
+    \newcommand{\PBASE@photon}{\ensuremath{\upgamma}}
+\else
+    \newcommand{\PBASE@photon}{\ensuremath{\gamma}}
+\fi
+\newcommand{\Pphoton}{\ensuremath{\PBASE@photon}}
+
+%%% Z or W bosons %%%
+\newcommand{\PBASE@zboson}{\ensuremath{\particletypeface{Z}}}
+\newcommand{\PBASE@wboson}{\ensuremath{\particletypeface{W}}}
+\newcommand{\Pzboson}{\ensuremath{\PBASE@zboson}}
+\newcommand{\Pzbosonzero}{\ensuremath{\PBASE@zboson^0}}
+\newcommand{\Pwbosonp}{\ensuremath{\PBASE@wboson^+}}
+\newcommand{\Pwbosonm}{\ensuremath{\PBASE@wboson^-}}
+\newcommand{\Pwbosonpm}{\ensuremath{\PBASE@wboson^\pm}}
+
+%%% Higgs %%%
+\newcommand{\PBASE@higgs}{\ensuremath{\particletypeface{H}}}
+\newcommand{\Phiggs}{\ensuremath{\PBASE@higgs^0}}
+
+%%% Gluon %%%
+% Gluon of unspecified color
+\newcommand{\PBASE@gluon}{\ensuremath{\particletypeface{g}}}
+\newcommand{\Pgluon}{\PBASE@gluon}
+
+% define colors for gluons
+\definecolor{redgluoncolor}{HTML}{7d0421}
+\definecolor{bluegluoncolor}{HTML}{000099}
+\definecolor{greengluoncolor}{HTML}{127d04}
+
+% if option color passed (or default) color r, g, and b red green and blue, else don't color
+\ifcolorgluons
+    \newcommand{\@redgluon}[1]{{\color{redgluoncolor}#1}}
+    \newcommand{\@bluegluon}[1]{{\color{bluegluoncolor}#1}}
+    \newcommand{\@greengluon}[1]{{\color{greengluoncolor}#1}}
+\else
+    \newcommand{\@redgluon}[1]{#1}
+    \newcommand{\@bluegluon}[1]{#1}
+    \newcommand{\@greengluon}[1]{#1}
+\fi
+
+% colored gluons
+\newcommand{\PBASE@redgluon}{\ensuremath{\particletypeface{r}}}
+\newcommand{\Predgluon}{\@redgluon{\PBASE@redgluon}}
+\newcommand{\PBASE@bluegluon}{\ensuremath{\particletypeface{b}}}
+\newcommand{\Pbluegluon}{\@bluegluon{\PBASE@bluegluon}}
+\newcommand{\PBASE@greengluon}{\ensuremath{\particletypeface{g}}}
+\newcommand{\Pgreengluon}{\@greengluon{\PBASE@greengluon}}
+
+% Antiparticles
+\newcommand{\APredgluon}{\ensuremath{\@redgluon{\anti{\PBASE@redgluon}}}}
+\newcommand{\APbluegluon}{\ensuremath{\@bluegluon{\anti{\PBASE@bluegluon}}}}
+\newcommand{\APgreengluon}{\ensuremath{\@greengluon{\anti{\PBASE@greengluon}}}}
+
+%%%%%%%%% Short names %%%%%%%%%
+\newcommand{\Pe}{\Pelectron}
+\newcommand{\APe}{\APelectron}
+\newcommand{\Pp}{\Pproton}
+\newcommand{\APp}{\APproton}
+\newcommand{\Pn}{\Pneutron}
+\newcommand{\APn}{\APneutron}
+\newcommand{\Pmu}{\Pmuon}
+\newcommand{\APmu}{\APmuon}
+\newcommand{\Ptau}{\Ptauon}
+\newcommand{\APtau}{\APtauon}
+\newcommand{\Pnu}{\Pneutrino}
+\newcommand{\Pnue}{\Pneutrinoelectron}
+\newcommand{\Pnumu}{\Pneutrinomuon}
+\newcommand{\Pnutau}{\Pneutrinotauon}
+\newcommand{\APnu}{\APneutrino}
+\newcommand{\APnue}{\APneutrinoelectron}
+\newcommand{\APnumu}{\APneutrinomuon}
+\newcommand{\APnutau}{\APneutrinotauon}
+\newcommand{\Pq}{\Pquark}
+\newcommand{\Pu}{\Pup}
+\newcommand{\Pd}{\Pdown}
+\newcommand{\Pc}{\Pcharm}
+\newcommand{\Ps}{\Pstrange}
+\newcommand{\Pt}{\Ptop}
+\newcommand{\Pb}{\Pbottom}
+\newcommand{\APq}{\APquark}
+\newcommand{\APu}{\APup}
+\newcommand{\APd}{\APdown}
+\newcommand{\APc}{\APcharm}
+\newcommand{\APs}{\APstrange}
+\newcommand{\APt}{\APtop}
+\newcommand{\APb}{\APbottom}
+\newcommand{\Pgamma}{\Pphoton}
+\newcommand{\PZ}{\Pzboson}
+\newcommand{\PZzero}{\Pzbosonzero}
+\newcommand{\PWp}{\Pwbosonp}
+\newcommand{\PWm}{\Pwbosonm}
+\newcommand{\PWpm}{\Pwbosonpm}
+\newcommand{\PHzero}{\Phiggs}
+\newcommand{\Pg}{\Pgluon}
+\newcommand{\Prg}{\Predgluon}
+\newcommand{\Pbg}{\Pbluegluon}
+\newcommand{\Pgg}{\Pgreengluon}
+\newcommand{\APrg}{\APredgluon}
+\newcommand{\APbg}{\APbluegluon}
+\newcommand{\APgg}{\APgreengluon}
