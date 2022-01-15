@@ -5,14 +5,23 @@
 #include:xparse
 #include:bm
 #include:diffcoeff
+#include:mathtools
+
+# diffcoeff commands
+\diff{func}{wrt}#m
+\diff*{func}{wrt}#m
+\diffp{func}{wrt}#m
+\diffp*{func}{wrt}#m
+\dl{arg}#m
 
 # Commands:
 \abs{arg}#m
 \abs*{arg}#m
+\norm{arg}#m
+\norm*{arg}#m
 \ket{arg}#m
 \bra{arg}#m
 \braket{arg 1}{arg 2}#m
-\ketbra{arg 1}{arg 2}#m
 \ket*{arg}#m
 \bra*{arg}#m
 \braket*{arg 1}{arg 2}#m

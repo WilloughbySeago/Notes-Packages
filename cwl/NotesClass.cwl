@@ -12,7 +12,13 @@
 #include:inconsolata
 #include:newtxmath
 
+# commands from loaded packages
+\coloneqq#m
+\eqqcolon#m
+
 # Commands:
+\define{text}#n
+\defineindex{text}#n
 \subtitle{title}
 \@subtitle#*
 \subsubtitle{title}
