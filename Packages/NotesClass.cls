@@ -8,7 +8,21 @@
 
 \LoadClass[a4paper, openany]{memoir}
 
-\RequirePackage[T1]{fontenc}
+\RequirePackage{ifthen}
+\RequirePackage{ifluatex}
+
+\ifluatex
+    \let\normalunderbrace=\underbrace
+    \RequirePackage{mathtools}
+    \let\underbrace=\normalunderbrace
+\fi
+
+\ifluatex  % Don't load fontenc with lualatex
+    \RequirePackage{fontspec}
+    \RequirePackage[math-style=ISO]{unicode-math}
+\else
+    \RequirePackage[T1]{fontenc}
+\fi
 \RequirePackage{xcolor}
 \definecolor{highlight}{RGB}{243,102,25} % Define the highlight color used for highlighting throughout
 \RequirePackage{graphicx}
@@ -179,22 +193,50 @@
 %%%%%% End index/glossaries -------------------------------------------------
 %%%%%% Ams things need loading before fonts
 \RequirePackage{amsmath}
-\RequirePackage{amssymb}
+\ifluatex
+    % \let\OLDarrowvert\arrowvert
+    %\undef\arrowvert
+    %\let\OLDeth\eth
+    %\undef\eth
+    %\let\OLDdigamma\digamma
+    %\undef\digamma
+    %\let\OLDbackepsilon\backepsilon
+    %\undef\backepsilon
+\else
+    \RequirePackage{amssymb}
+\fi
 \RequirePackage{amsthm}
 %%%%%% End ams things need loading before fonts
+
 %%%%%% Fonts ----------------------------------------------------------------
-\RequirePackage{libertine}  % Main font
-\RequirePackage{avant}  % Sans serif font
-\RequirePackage[%
-varl  % Change lowercase L to look less like a one
-]{inconsolata}  % Typewriter font
-\RequirePackage[%
-vvarbb,       % Make \mathbb an alias for \vvmathbb 
-libertine,    % Use libertine fonts for letters
-liby,         % Nicer y, slightly more angular
-libaltvw,     % Nicer v and w
-slantedGreek  % Make upercase Greek slanted (complies w/ ISO standards)
-]{newtxmath}
+\ifluatex
+    \setmainfont{Stix Two Text}
+    \setsansfont{TeX Gyre Adventor}
+    \setmonofont{TeX Gyre Cursor}
+    \setmathfont{Stix Two Math}
+    \setmathfont{Latin Modern Math}[range=frak]
+    \setmathfont{TeX Gyre Cursor}[range=tt]
+    %\RequirePackage[%
+    %vvarbb,       % Make \mathbb an alias for \vvmathbb 
+    %libertine,    % Use libertine fonts for letters
+    %liby,         % Nicer y, slightly more angular
+    %libaltvw,     % Nicer v and w
+    %slantedGreek  % Make upercase Greek slanted (complies w/ ISO standards)
+    %]{newtxmath}
+\else
+    \RequirePackage{libertine}  % Main font
+    \RequirePackage{avant}  % Sans serif font
+    \RequirePackage[%
+    varl  % Change lowercase L to look less like a one
+    ]{inconsolata}  % Typewriter font
+    \RequirePackage[%
+    vvarbb,       % Make \mathbb an alias for \vvmathbb 
+    libertine,    % Use libertine fonts for letters
+    liby,         % Nicer y, slightly more angular
+    libaltvw,     % Nicer v and w
+    slantedGreek  % Make upercase Greek slanted (complies w/ ISO standards)
+    ]{newtxmath}
+\fi
 %%%%%% End fonts ------------------------------------------------------------
 %%%%%% Misc. ----------------------------------------------------------------
 \renewcommand*{\fnumbersep}{\,}  % redefine separator for \fcardinal, e.g. \facardinal{1234} = 1\fnumbersep{}234 = 1\,234

@@ -6,7 +6,11 @@
 \RequirePackage{xparse}  % Needed for command formatting
 \RequirePackage{amsmath}  % Needed for \DeclareMathOperator
 \RequirePackage{amsfonts}  % Needed for black board bold
-\RequirePackage{mathtools}  % Needed for \DeclarePairedDelimiter 
+\ifluatex  % if lualatex used then loaded mathtools before unicode-math
+
+\else
+    \RequirePackage{mathtools}  % Needed for \DeclarePairedDelimiter 
+\fi
 \RequirePackage{bm}  % Needed for bold vectors
 
 % Absolute value/Norm
@@ -51,13 +55,25 @@
 }
 %\newcommand{\grad}{\nabla}
 \let\division\div  % Save division symbol as \division to free up \div
-\RenewDocumentCommand{\div}{o}{
-    \IfNoValueTF{#1}{
-        \nablaVector \cdot
-    }{
-        \nablaVector_{#1} \cdot
-    }
+\ifluatex
+    \AtBeginDocument{
+        \RenewDocumentCommand{\div}{o}{
+            \IfNoValueTF{#1}{
+                \nablaVector \cdot
+            }{
+                \nablaVector_{#1} \cdot
+            }
+        }
 }
+\else
+    \RenewDocumentCommand{\div}{o}{
+        \IfNoValueTF{#1}{
+            \nablaVector \cdot
+        }{
+            \nablaVector_{#1} \cdot
+        }
+    }
+\fi
 %\renewcommand{\div}{\grad\cdot}
 \NewDocumentCommand{\curl}{o}{
     \IfNoValueTF{#1}{
@@ -87,7 +103,11 @@
 \providecommand*\vv{}  % define if not already defined, if defined do nothing
 
 % Basic vector bold, renewcommand to change
-\renewcommand*{\vv}[1]{\bm{#1}}
+\ifluatex
+    \renewcommand{\vv}[1]{\symbf{#1}}
+\else
+    \renewcommand*{\vv}[1]{\bm{#1}}
+\fi
 
 % Unit vectors, e_1 etc.
 \newcommand*{\ve}[1]{\vv{e_{#1}}}
@@ -123,12 +143,13 @@
     }
 }
 
-\newcommand{\generalLinear}{\mathrm{GL}}
-\newcommand{\specialLinear}{\mathrm{SL}}
-\newcommand{\orthogonal}{\mathrm{O}}
-\newcommand{\specialOrthogonal}{\mathrm{SO}}
-\newcommand{\unitary}{\mathrm{U}}
-\newcommand{\specialUnitary}{\mathrm{SU}}
+\newcommand*{\@lineargroup}[1]{\mathop{\mathrm{#1}}}
+\newcommand{\generalLinear}{\@lineargroup{GL}}
+\newcommand{\specialLinear}{\@lineargroup{SL}}
+\newcommand{\orthogonal}{\@lineargroup{O}}
+\newcommand{\specialOrthogonal}{\@lineargroup{SO}}
+\newcommand{\unitary}{\@lineargroup{U}}
+\newcommand{\specialUnitary}{\@lineargroup{SU}}
 
 % Lie algebras
 \newcommand*{\lie}[1]{\mathfrak{#1}}
