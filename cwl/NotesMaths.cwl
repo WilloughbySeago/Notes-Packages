@@ -31,6 +31,7 @@
 \diffD*{func}{wrt}#m
 \diffD*[order]{func}{wrt}#m
 \dd{arg}#m
+\dl{arg}#m
 \nablaScalar
 \nablaVector
 \grad#m
@@ -67,7 +68,7 @@
 \specialUnitary#m
 \lie{letter}#m
 \generalLinearLie#m
-\secialLinearLie#m
+\specialLinearLie#m
 \orthogonalLie#m
 \specialOrthogonalLie#m
 \unitaryLie#m

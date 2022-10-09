@@ -14,7 +14,7 @@
 \end{thm}#n
 \begin{clm}{title}{label}#ln
 \end{clm}#n
-\begin{prp}{title}{label}#n
+\begin{prp}{title}{label}#ln
 \end{prp}#n
 \begin{lma}{title}{label}#ln
 \end{lma}#n
