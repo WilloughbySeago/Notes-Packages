@@ -79,6 +79,8 @@
 \renewcommand{\afterloftitle}{\afterchaptertitle\par\nobreak\mbox{}\hfill{\normalfont Page}\par\nobreak}
 % Put the word 'Page' above the page numbers in lot
 \renewcommand{\afterlottitle}{\afterchaptertitle\par\nobreak\mbox{}\hfill{\normalfont Page}\par\nobreak}
+% Increase width of numbers for parts
+\setlength{\cftpartnumwidth}{2.5em}
 %%%%%% End layout for table of contents -------------------------------------
 %%%%%% Figure/Table setup ---------------------------------------------------
 % automatically center figures
